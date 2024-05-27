@@ -32,7 +32,11 @@ st.markdown('# Inside Beyond Education', unsafe_allow_html=True)
 st.image('cropped-Beyond-Education_Horizonatal-color.png', use_column_width=True)
 
 # Menú lateral
-option = st.sidebar.selectbox('Navigation', ['Home', 'Preguntas más frecuentes', 'Destinos voluntariados', 'Destinos campamentos'])
+option = st.sidebar.selectbox('Navigation', ['Home', 'Preguntas más frecuentes', 
+                                             'Desde dónde nos escriben', 
+                                             'Destinos de interés',
+                                             'Destinos voluntariados', 
+                                             'Destinos campamentos'])
 
 # Si selecciona 'Preguntas más frecuentes', mostrar el gráfico
 if option == 'Preguntas más frecuentes':
@@ -60,10 +64,61 @@ if option == 'Preguntas más frecuentes':
     fig = px.bar(preguntas_df, x='categoria', y='conteo', title='Preguntas más frecuentes por los usuarios', labels={'categoria': 'Preguntas', 'conteo': 'Conteo'})
 
     # Cambiar colores de las barras
-    fig.update_traces(marker_color=['#C909E0']*5 + ['#48B3DF']*(len(preguntas_df)-5))
+    fig.update_traces(marker_color=['#AD66D5']*5 + ['#6C8CD5']*(len(preguntas_df)-5))
 
     # Mostrar el gráfico en Streamlit
     st.plotly_chart(fig)
+
+# Si selecciona 'Desde dónde nos escriben', mostrar el gráfico
+elif option == 'Desde dónde nos escriben':
+    # Cargar los datos desde la base de datos
+    query = '''
+    SELECT * 
+    FROM messages
+    '''
+
+    df = sql_query(query)
+
+    # Filtrar y contar los mensajes por país
+    countries = ['de mexico', 'de colombia', 'de españa']
+    conteos = {country: len(df[df['pregunta'].str.contains(country, case=False, na=False)]) for country in countries}
+    paises_df = pd.DataFrame({'pais': list(conteos.keys()), 'conteo': list(conteos.values())})
+    paises_df = paises_df.sort_values(by='conteo', ascending=False)
+
+    # Crear el gráfico de barras con Plotly Express
+    fig = px.bar(paises_df, x='pais', y='conteo', title='Mensajes por país', labels={'pais': 'País', 'conteo': 'Conteo'})
+
+    # Cambiar colores de las barras
+    fig.update_traces(marker_color=['#AD66D5', '#6C8CD5','#FFE773'])
+
+    # Mostrar el gráfico en Streamlit
+    st.plotly_chart(fig)
+
+
+# Si selecciona 'Destinos de interés', mostrar el gráfico
+elif option == 'Destinos de interés':
+    # Cargar los datos desde la base de datos
+    query = '''
+    SELECT * 
+    FROM messages
+    '''
+
+    df = sql_query(query)
+
+   
+    countries = ['holanda', 'estados unidos', 'francia', 'alemania', 'reino unido', 'irlanda', 'portugal', 'españa']
+    conteos = {country: len(df[df['pregunta'].str.contains(country, case=False, na=False)]) for country in countries}
+    destinos_df = pd.DataFrame({'pais': list(conteos.keys()), 'conteo': list(conteos.values())})
+    destinos_df = destinos_df.sort_values(by='conteo', ascending=False)
+    # Crear el gráfico de barras con Plotly Express
+    fig = px.bar(destinos_df, x='pais', y='conteo', title='Mensajes por destino de interés', labels={'pais': 'País', 'conteo': 'Conteo'})
+    
+    # Cambiar colores de las barras
+    colores = ['#AD66D5']*4 + ['#6C8CD5']*(len(destinos_df)-4)
+    fig.update_traces(marker_color=colores)
+
+    st.plotly_chart(fig)
+
 
 # Si selecciona 'Destinos voluntariados', mostrar el mapa de folium.Marker
 elif option == 'Destinos voluntariados':
@@ -83,22 +138,18 @@ elif option == 'Destinos voluntariados':
     # Mostrar el mapa en Streamlit
     folium_static(mymap)
 
-
-# Menú lateral
-
-
 # Si selecciona 'Destinos campamentos', mostrar el mapa con los destinos de campamentos
 elif option == 'Destinos campamentos':
     # Crear un DataFrame con los destinos de campamentos y sus coordenadas
     data_campamentos = {
-    'destinos': ['West Sussex', 'Crawley', 'Northampton', 'Buckinghamshire', 'Dorset', 'London', 'Manchester', 
-                 'Biarritz', 'French Alps', 'Switzerland', 'Swiss Alps', 'Maine', 'New Hampshire', 'Pennsylvania', 
-                 'Florida', 'Santander', 'Barcelona', 'Madrid', 'León', 'Berlin', 'Canada', 'Dublin'],
-    'latitud': [50.8091, 51.1092, 52.2405, 51.9943, 50.7151, 51.5074, 53.4808, 43.4832, 45.8325, 46.8182, 46.8182, 45.2538, 
-                43.1939, 40.7128, 27.9944, 43.4623, 41.3851, 40.4168, 42.5987, 52.5200, 53.3498, 53.3498],
-    'longitud': [-0.7539, -0.1872, -0.9027, -0.7394, -2.4406, -0.1278, -2.2426, -1.5586, 6.6113, 8.2275, 8.2275, -69.4455, 
-                 -71.5724, -77.0369, -81.7603, -3.8196, 2.1734, -3.7038, -5.5671, 13.4050, -106.3468, -6.2603]
-}
+        'destinos': ['West Sussex', 'Crawley', 'Northampton', 'Buckinghamshire', 'Dorset', 'London', 'Manchester', 
+                     'Biarritz', 'French Alps', 'Switzerland', 'Swiss Alps', 'Maine', 'New Hampshire', 'Pennsylvania', 
+                     'Florida', 'Santander', 'Barcelona', 'Madrid', 'León', 'Berlin', 'Canada', 'Dublin'],
+        'latitud': [50.8091, 51.1092, 52.2405, 51.9943, 50.7151, 51.5074, 53.4808, 43.4832, 45.8325, 46.8182, 46.8182, 45.2538, 
+                    43.1939, 40.7128, 27.9944, 43.4623, 41.3851, 40.4168, 42.5987, 52.5200, 53.3498, 53.3498],
+        'longitud': [-0.7539, -0.1872, -0.9027, -0.7394, -2.4406, -0.1278, -2.2426, -1.5586, 6.6113, 8.2275, 8.2275, -69.4455, 
+                     -71.5724, -77.0369, -81.7603, -3.8196, 2.1734, -3.7038, -5.5671, 13.4050, -106.3468, -6.2603]
+    }
 
     df_campamentos = pd.DataFrame(data_campamentos)
 
