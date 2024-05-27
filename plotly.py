@@ -38,6 +38,7 @@ def sql_query(query):
     return df
 
 # Página de inicio
+st.set_page_config(page_title="Inside", page_icon="img/cropped-Beyond-Education_Horizonatal-color.png")
 st.markdown('# Inside Beyond Education', unsafe_allow_html=True)
 st.image('cropped-Beyond-Education_Horizonatal-color.png', use_column_width=True)
 
