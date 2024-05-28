@@ -1,0 +1,8 @@
+streamlit
+psycopg2-binary
+pandas
+folium
+plotly
+streamlit-folium
+plotly-express
+streamlit
