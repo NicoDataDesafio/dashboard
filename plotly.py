@@ -1,9 +1,7 @@
 import streamlit as st
 import psycopg2
 import pandas as pd
-import folium
 import plotly.express as px
-from streamlit_folium import folium_static
 
 import os
 
