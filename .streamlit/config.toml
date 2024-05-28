@@ -2,10 +2,17 @@
 base = "light"
 primaryColor = "#a50085"
 
+
 [server]
 headless = true
 
 [global]
 useContainerWidth = true
 
+[deprecation]
+showPyplotGlobalUse = false
+
+[server]
+enableCORS = false
+enableXsrfProtection = false
 
