@@ -35,18 +35,24 @@ def sql_query(query):
     conn.close()
     return df
 
-# Página de inicio
 st.set_page_config(page_title="Inside", page_icon="img/cropped-Beyond-Education_Horizonatal-color.png")
-st.markdown('# Inside Beyond Education', unsafe_allow_html=True)
-st.image('cropped-Beyond-Education_Horizonatal-color.png', use_column_width=True)
 
 # Menú lateral
 option = st.sidebar.selectbox('Navigation', ['Home', 'Preguntas más frecuentes', 
                                              'Desde dónde nos escriben', 
                                              'Destinos de interés'])
 
+if option == 'Home':
+
+    # Página de inicio
+    
+    st.markdown('# Inside Beyond Education', unsafe_allow_html=True)
+    st.image('cropped-Beyond-Education_Horizonatal-color.png', use_column_width=True)
+
+
+
 # Si selecciona 'Preguntas más frecuentes', mostrar el gráfico
-if option == 'Preguntas más frecuentes':
+elif option == 'Preguntas más frecuentes':
     # Cargar los datos desde la base de datos
     query = '''
     SELECT * 
