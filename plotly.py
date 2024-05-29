@@ -37,6 +37,10 @@ def sql_query(query):
 
 st.set_page_config(page_title="Inside", page_icon="img/cropped-Beyond-Education_Horizonatal-color.png")
 
+st.get_option("theme.primaryColor")
+st.get_option("theme.secondaryBackgroundColor")
+st.get_option("server.enableCORS")
+st.get_option("server.enableXsrfProtection")
 # Menú lateral
 option = st.sidebar.selectbox('Navigation', ['Home', 'Preguntas más frecuentes', 
                                              'Desde dónde nos escriben', 
