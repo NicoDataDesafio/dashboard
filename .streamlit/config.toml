@@ -1,14 +1,8 @@
 [theme]
-base = "light"
-primaryColor = "#a50085"
-
-[global]
-useContainerWidth = true
-
-[deprecation]
-showPyplotGlobalUse = false
+base="light"
+primaryColor="#a50085"
+secondaryBackgroundColor="#f4f4f4"
 
 [server]
 enableCORS = false
 enableXsrfProtection = false
-
