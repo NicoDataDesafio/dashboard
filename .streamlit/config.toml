@@ -1,0 +1,14 @@
+[theme]
+base = "light"
+primaryColor = "#a50085"
+
+[global]
+useContainerWidth = true
+
+[deprecation]
+showPyplotGlobalUse = false
+
+[server]
+enableCORS = false
+enableXsrfProtection = false
+
